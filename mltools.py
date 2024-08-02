@@ -8,6 +8,7 @@ import os
 
 
 def view_many_image(target_dir, target_class, times):
+    # View many random images
     images = []
     for time in range(times):
         target_folder = target_dir + target_class
@@ -25,6 +26,7 @@ def view_many_image(target_dir, target_class, times):
 
 
 def view_random_image(target_dir, target_class):
+    # View a single random image
     target_folder = target_dir + target_class
     random_image = random.sample(os.listdir(target_folder), 1)
     img = mpimg.imread(target_folder + "/" + random_image[0])
@@ -38,6 +40,7 @@ def view_random_image(target_dir, target_class):
 
 
 def plot_many_image(target_dir, target_class1, target_class2, times):
+    # Plot many random image
     plt.figure(figsize=(15, times * 5))  # Adjust figure size as needed
 
     for i in range(times):
@@ -64,6 +67,7 @@ def plot_many_image(target_dir, target_class1, target_class2, times):
 
 
 def plot_decision_boundary(model, X, y):
+    # Plot Decision Boundary for classification problem. X are input and y is the output
     x_min, x_max = X[:, 0].min() - 0.1, X[:, 0].max() + 0.1
     y_min, y_max = X[:, 1].min() - 0.1, X[:, 1].max() + 0.1
 
@@ -95,7 +99,7 @@ def plot_decision_boundary(model, X, y):
 
 
 def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_size=15):
-    # Bikin Confusion Matrix
+    # Make confusion matrix. Support multiclass model
     cm = confusion_matrix(y_true, y_pred) / 10
     cm_normalize = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
     n_classes = cm.shape[0]
@@ -107,12 +111,11 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
     cax = ax.matshow(cm, cmap=plt.cm.Greens)
     fig.colorbar(cax)
 
-    if classes:  # Kalau berkelas, maka labelnya adalah kelas kelas
+    if classes:  # Check if do have classes
         labels = classes
-    else:  # Kalau cuma binary, maka labelnya pada shape 0 (0 dan 1)
+    else:  # Then if binary set to 0 shape
         labels = np.arange(cm.shape[0])
 
-    # Beri label ke axes
     ax.set(
         title="Confusion Matrix",
         xlabel="Predicted Table",
@@ -132,11 +135,7 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
     ax.xaxis.label.set_size(text_size)
     ax.title.set_size(text_size)
 
-    # Bikin treshold pakai warna berbeda
-
     threshold = (cm.max() + cm.min()) / 2.
-
-    # Plot text setiap cell
 
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         plt.text(j, i, f"({cm[i, j]:.1f}%)",
